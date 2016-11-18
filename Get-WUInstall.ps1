@@ -93,6 +93,9 @@
 	.PARAMETER Debuger	
 	    Debug mode.
 
+	.PARAMETER UpdateCount
+	    The amount of updates to install.
+
 	.EXAMPLE
 		Get info about updates that are not require user interaction to install.
 	
@@ -236,7 +239,8 @@
 		[Switch]$AutoReboot,
 		[Switch]$IgnoreReboot,
 		[Switch]$AutoSelectOnly,
-		[Switch]$Debuger
+		[Switch]$Debuger,
+		[int]$UpdateCount
 	)
 
 	Begin
@@ -499,7 +503,17 @@
 		$PreFoundUpdatesToDownload = $objResults.Updates.count
 		Write-Verbose "Found [$PreFoundUpdatesToDownload] Updates in pre search criteria"				
 
-		Foreach($Update in $objResults.Updates)
+		# added support update count
+		if ($UpdateCount)
+		{
+			$UpdatesToInstall = $objResults.Updates | select -First $UpdateCount
+		}
+		else
+		{
+			$UpdatesToInstall = $objResults.Updates
+		}
+
+		Foreach($Update in $UpdatesToInstall)
 		{	
 			$UpdateAccess = $true
 			Write-Progress -Activity "Post search updates for $Computer" -Status "[$NumberOfUpdate/$PreFoundUpdatesToDownload] $($Update.Title) $size" -PercentComplete ([int]($NumberOfUpdate/$PreFoundUpdatesToDownload * 100))
