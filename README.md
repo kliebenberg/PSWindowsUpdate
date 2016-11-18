@@ -1,5 +1,8 @@
 ﻿# PSWindowsUpdate
 
+## Background
+This is a fork of Michal Gajda's [PSWindowsUpdate](https://www.powershellgallery.com/packages/PSWindowsUpdate) PowerShell module. The original module can be found on the PowerShell Gallery located [here](https://www.powershellgallery.com/packages/PSWindowsUpdate).
+
 ## Update Count
 The parameter -UpdateCount has been added that allows you to limit the number of updates that are installed. This was added to assist in back patching too many updates at once causing the entire update process to fail.
 
