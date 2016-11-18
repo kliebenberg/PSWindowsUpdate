@@ -96,6 +96,9 @@
 	.PARAMETER UpdateCount
 	    The amount of updates to install.
 
+	.PARAMETER WSUS
+	    A switch for when WSUS is to  be used.
+
 	.EXAMPLE
 		Get info about updates that are not require user interaction to install.
 	
@@ -230,6 +233,7 @@
 		[String]$ServiceID,
 		[Switch]$WindowsUpdate,
 		[Switch]$MicrosoftUpdate,
+		[Switch]$WSUS,
 		
 		#Mode options
 		[Switch]$ListOnly,
@@ -330,6 +334,15 @@
 		
 		Write-Debug "Create Microsoft.Update.Session.Searcher object"
 		$objSearcher = $objSession.CreateUpdateSearcher()
+
+        # added support for WSUS 
+        # https://msdn.microsoft.com/en-us/library/windows/desktop/aa387280(v=vs.85).aspx
+		If($WSUS)
+		{
+			Write-Debug "Set source of updates to ManagedServer"
+			$objSearcher.ServerSelection = 1
+			$serviceName = "Managed Server"
+		} #End If $WSUS
 
 		If($WindowsUpdate)
 		{
